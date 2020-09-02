@@ -8,11 +8,11 @@
 #include "GUI.h"
 
 wxBEGIN_EVENT_TABLE(GUI, wxFrame)
-	EVT_TREELIST_ITEM_CHECKED(10002, TreeListCtrl_OnItemChecked)
-	EVT_BUTTON(10001, ButtonOk_OnPressed)
-	EVT_MENU(10003, MenuItem1_OnPressed)
-	EVT_MENU(10004, MenuItem2_OnPressed)
-	EVT_MENU(10005, MenuItem3_OnPressed)
+EVT_TREELIST_ITEM_CHECKED(10002, TreeListCtrl_OnItemChecked)
+EVT_BUTTON(10001, ButtonOk_OnPressed)
+EVT_MENU(10003, MenuItem1_OnPressed)
+EVT_MENU(10004, MenuItem2_OnPressed)
+EVT_MENU(10005, MenuItem3_OnPressed)
 wxEND_EVENT_TABLE()
 
 GUI::GUI() : wxFrame(nullptr, wxID_ANY, "SEOS Cache Cleaner")
@@ -90,7 +90,7 @@ GUI::~GUI()
 }
 
 void GUI::UpdateProgramList()
-{	
+{
 	m_treeListCtrl->DeleteAllItems();
 	displaySize = 0;
 
@@ -109,7 +109,7 @@ void GUI::UpdateProgramList()
 			folderSize = manager->GetFolderSize(dir.path);
 			progSize += folderSize;
 			m_treeListCtrl->SetItemText(tempChildItem, 2, GetStyledSize(folderSize));
-			
+
 			if (dir.isSafe) {
 				m_treeListCtrl->CheckItem(tempChildItem);
 				UpdateFolderSize(dir.path, true);
@@ -154,7 +154,7 @@ void GUI::TreeListCtrl_OnItemChecked(wxTreeListEvent& event)
 	switch (event.GetOldCheckedState()) {
 	case wxCHK_UNCHECKED: // If previously unchecked, check children
 		if (m_treeListCtrl->GetItemParent(event.GetItem()) == m_treeListCtrl->GetRootItem()) { // If parent
-			
+
 			tempItem = m_treeListCtrl->GetFirstChild(event.GetItem());
 			UpdateFolderSize(m_treeListCtrl->GetItemText(tempItem).ToStdString(), true);
 
@@ -168,7 +168,7 @@ void GUI::TreeListCtrl_OnItemChecked(wxTreeListEvent& event)
 		break;
 	case wxCHK_CHECKED: // If previously checked, uncheck children
 		if (m_treeListCtrl->GetItemParent(event.GetItem()) == m_treeListCtrl->GetRootItem()) { // If parent
-			
+
 			tempItem = m_treeListCtrl->GetFirstChild(event.GetItem());
 			UpdateFolderSize(m_treeListCtrl->GetItemText(tempItem).ToStdString(), false);
 
@@ -202,53 +202,56 @@ void GUI::ButtonOk_OnPressed(wxCommandEvent& event)
 	wxTreeListItems items;
 	wxTreeListItem tempItem = m_treeListCtrl->GetFirstItem();
 
-	while (tempItem = m_treeListCtrl->GetNextItem(tempItem)) { // Iterate over all items
-		if (m_treeListCtrl->GetItemParent(tempItem) != m_treeListCtrl->GetRootItem() && m_treeListCtrl->GetCheckedState(tempItem) == wxCHK_CHECKED) items.push_back(tempItem); // Add to list if child and checked
-	}
+	if (tempItem != NULL) {
 
-	if (items.size() > 0) {
-		m_buttonOk->Disable();
-		m_treeListCtrl->Disable();
-		m_gauge->Enable();
-		m_statusBar->SetStatusText("Removing selected files...", 3);
+		while (tempItem = m_treeListCtrl->GetNextItem(tempItem)) { // Iterate over all items
+			if (m_treeListCtrl->GetItemParent(tempItem) != m_treeListCtrl->GetRootItem() && m_treeListCtrl->GetCheckedState(tempItem) == wxCHK_CHECKED) items.push_back(tempItem); // Add to list if child and checked
+		}
 
-		displaySize = 0;
-		std::string path;
-		int counter = 1;
-		m_gauge->SetRange(items.size());
+		if (items.size() > 0) {
+			m_buttonOk->Disable();
+			m_treeListCtrl->Disable();
+			m_gauge->Enable();
+			m_statusBar->SetStatusText("Removing selected files...", 3);
 
-		for (auto& item : items) {
-			m_gauge->SetValue(counter);
-			counter++;
+			displaySize = 0;
+			std::string path;
+			int counter = 1;
+			m_gauge->SetRange(items.size());
 
-			path = m_treeListCtrl->GetItemText(item).ToStdString();
-			displaySize += manager->GetFolderSize(path); // Needed to display total filesize later
-			
-			for (auto& p : std::filesystem::recursive_directory_iterator(path)) { // Iterate over all files and folders
+			for (auto& item : items) {
+				m_gauge->SetValue(counter);
+				counter++;
+
+				path = m_treeListCtrl->GetItemText(item).ToStdString();
+				displaySize += manager->GetFolderSize(path); // Needed to display total filesize later
+
+				for (auto& p : std::filesystem::recursive_directory_iterator(path)) { // Iterate over all files and folders
+					try {
+						std::filesystem::remove(p); // Delete file
+					}
+					catch (std::filesystem::filesystem_error& e) {
+						std::cout << e.what() << std::endl; // Simple log
+					}
+				}
+
 				try {
-					std::filesystem::remove(p); // Delete file
+					std::filesystem::remove(path); // Delete folder if possible
 				}
 				catch (std::filesystem::filesystem_error& e) {
 					std::cout << e.what() << std::endl; // Simple log
 				}
 			}
 
-			try {
-				std::filesystem::remove(path); // Delete folder if possible
-			}
-			catch (std::filesystem::filesystem_error& e) {
-				std::cout << e.what() << std::endl; // Simple log
-			}
+			m_statusBar->SetStatusText("Cleaned " + GetStyledSize() + " in total!", 3);
+			m_gauge->Disable();
+			m_treeListCtrl->Enable();
+			m_buttonOk->Enable();
+
+			displaySize = 0;
+			manager->PrepareProgramList();
+			UpdateProgramList();
 		}
-
-		m_statusBar->SetStatusText("Cleaned " + GetStyledSize() + " in total!", 3);
-		m_gauge->Disable();
-		m_treeListCtrl->Enable();
-		m_buttonOk->Enable();
-
-		displaySize = 0;
-		manager->PrepareProgramList();
-		UpdateProgramList();
 	}
 }
 
