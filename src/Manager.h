@@ -1,9 +1,16 @@
+/*
+* Copyright © 2020 Berny23
+*
+* This file is part of "SEOS Cache Cleaner" which is released under the "MIT" license.
+* See file "LICENSE" or go to "https://choosealicense.com/licenses/mit" for full license details.
+*/
+
 #pragma once
 
 #include <fstream>
 #include <filesystem>
 #include <vector>
-#include "nlohmann/json.hpp"
+#include <json.hpp>
 #include <windows.h>
 #include <processenv.h>
 #include <algorithm>

@@ -1,0 +1,20 @@
+{
+  "programs": [
+    {
+      "name": "My Program 1",
+      "directories": [
+        {
+          "isSafe": true,
+          "path": "%USERPROFILE%/Test Folder"
+        },
+        {
+          "isSafe": false,
+          "path": "C:/NOTEXISTING"
+        }
+      ]
+    },
+    {
+      "name": "My Program 2"
+    }
+  ]
+}

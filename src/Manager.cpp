@@ -1,3 +1,10 @@
+/*
+* Copyright © 2020 Berny23
+*
+* This file is part of "SEOS Cache Cleaner" which is released under the "MIT" license.
+* See file "LICENSE" or go to "https://choosealicense.com/licenses/mit" for full license details.
+*/
+
 #include "Manager.h"
 
 using json = nlohmann::json;
@@ -30,7 +37,7 @@ void Manager::PrepareProgramList()
 
 			char fullPath[MAX_PATH];
 
-			auto x = ExpandEnvironmentStringsA(path.c_str(), fullPath, MAX_PATH);
+			auto x = ExpandEnvironmentStringsA(path.c_str(), fullPath, MAX_PATH); // Abomination of mankind
 
 			std::string fullPathString(fullPath);
 			fullPathString = ReplaceAll(fullPathString, "\\", "/");

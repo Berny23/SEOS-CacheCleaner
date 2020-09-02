@@ -1,8 +1,18 @@
+/*
+* Copyright © 2020 Berny23
+*
+* This file is part of "SEOS Cache Cleaner" which is released under the "MIT" license.
+* See file "LICENSE" or go to "https://choosealicense.com/licenses/mit" for full license details.
+*/
+
 #include "GUI.h"
 
 wxBEGIN_EVENT_TABLE(GUI, wxFrame)
 	EVT_TREELIST_ITEM_CHECKED(10002, TreeListCtrl_OnItemChecked)
 	EVT_BUTTON(10001, ButtonOk_OnPressed)
+	EVT_MENU(10003, MenuItem1_OnPressed)
+	EVT_MENU(10004, MenuItem2_OnPressed)
+	EVT_MENU(10005, MenuItem3_OnPressed)
 wxEND_EVENT_TABLE()
 
 GUI::GUI() : wxFrame(nullptr, wxID_ANY, "SEOS Cache Cleaner")
@@ -11,13 +21,25 @@ GUI::GUI() : wxFrame(nullptr, wxID_ANY, "SEOS Cache Cleaner")
 
 	this->SetSizeHints(wxSize(650, 400), wxDefaultSize);
 
-	m_statusBar = this->CreateStatusBar(3, 0, wxID_ANY);
+	m_statusBar = this->CreateStatusBar(6, 0, wxID_ANY);
 	m_menubar = new wxMenuBar(0);
 	m_menu1 = new wxMenu();
+	wxMenuItem* m_menuItem1;
+	m_menuItem1 = new wxMenuItem(m_menu1, 10003, wxString(wxT("Refresh program list")) + wxT('\t') + wxT("CTRL+R"), wxEmptyString, wxITEM_NORMAL);
+	m_menu1->Append(m_menuItem1);
+
+	wxMenuItem* m_menuItem2;
+	m_menuItem2 = new wxMenuItem(m_menu1, 10004, wxString(wxT("Exit")) + wxT('\t') + wxT("CTRL+Q"), wxEmptyString, wxITEM_NORMAL);
+	m_menu1->Append(m_menuItem2);
+
 	m_menubar->Append(m_menu1, wxT("File"));
 
 	m_menu2 = new wxMenu();
-	m_menubar->Append(m_menu2, wxT("About"));
+	wxMenuItem* m_menuItem3;
+	m_menuItem3 = new wxMenuItem(m_menu2, 10005, wxString(wxT("About...")) + wxT('\t') + wxT("CTRL+I"), wxEmptyString, wxITEM_NORMAL);
+	m_menu2->Append(m_menuItem3);
+
+	m_menubar->Append(m_menu2, wxT("Help"));
 
 	this->SetMenuBar(m_menubar);
 
@@ -54,8 +76,11 @@ GUI::GUI() : wxFrame(nullptr, wxID_ANY, "SEOS Cache Cleaner")
 
 	// Generated - End
 
-	m_statusBar->SetStatusText("© 2020 - Berny23");
+	int widths[] = { 0, 100, -1, 200, -1, 100 };
+	m_statusBar->SetStatusWidths(6, widths);
+	m_statusBar->SetStatusText("© 2020 - Berny23", 1);
 
+	about = new DialogAbout(this);
 	manager = new Manager();
 	UpdateProgramList();
 }
@@ -67,6 +92,7 @@ GUI::~GUI()
 void GUI::UpdateProgramList()
 {	
 	m_treeListCtrl->DeleteAllItems();
+	displaySize = 0;
 
 	wxTreeListItem tempItem, tempChildItem;
 	unsigned long long progSize, folderSize;
@@ -101,7 +127,7 @@ void GUI::UpdateFolderSize(std::string path, bool add)
 	if (add) displaySize += manager->GetFolderSize(path); // Add size
 	else displaySize -= manager->GetFolderSize(path); // Subtract size
 
-	m_statusBar->SetStatusText(GetStyledSize(), 2);
+	m_statusBar->SetStatusText(GetStyledSize(), 5);
 }
 
 std::string GUI::GetStyledSize(unsigned long long size) {
@@ -120,6 +146,8 @@ std::string GUI::GetStyledSize(unsigned long long size) {
 
 void GUI::TreeListCtrl_OnItemChecked(wxTreeListEvent& event)
 {
+	m_statusBar->SetStatusText("", 3); // Clear status text
+
 	m_treeListCtrl->UpdateItemParentStateRecursively(event.GetItem());
 	wxTreeListItem tempItem;
 
@@ -182,7 +210,7 @@ void GUI::ButtonOk_OnPressed(wxCommandEvent& event)
 		m_buttonOk->Disable();
 		m_treeListCtrl->Disable();
 		m_gauge->Enable();
-		m_statusBar->SetStatusText("Removing selected files...", 1);
+		m_statusBar->SetStatusText("Removing selected files...", 3);
 
 		displaySize = 0;
 		std::string path;
@@ -213,7 +241,7 @@ void GUI::ButtonOk_OnPressed(wxCommandEvent& event)
 			}
 		}
 
-		m_statusBar->SetStatusText("Cleaned " + GetStyledSize() + " in total!", 1);
+		m_statusBar->SetStatusText("Cleaned " + GetStyledSize() + " in total!", 3);
 		m_gauge->Disable();
 		m_treeListCtrl->Enable();
 		m_buttonOk->Enable();
@@ -222,4 +250,23 @@ void GUI::ButtonOk_OnPressed(wxCommandEvent& event)
 		manager->PrepareProgramList();
 		UpdateProgramList();
 	}
+}
+
+void GUI::MenuItem1_OnPressed(wxCommandEvent& event)
+{
+	manager->PrepareProgramList();
+	UpdateProgramList();
+
+	m_gauge->SetValue(0);
+	m_statusBar->SetStatusText("Successfully refreshed list.", 3);
+}
+
+void GUI::MenuItem2_OnPressed(wxCommandEvent& event)
+{
+	exit(EXIT_SUCCESS);
+}
+
+void GUI::MenuItem3_OnPressed(wxCommandEvent& event)
+{
+	about->ShowModal();
 }
