@@ -23,14 +23,12 @@
     <ClInclude Include="DialogAbout.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="Manager.h" />
-    <ClInclude Include="md5.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="DialogAbout.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="Manager.cpp" />
-    <ClCompile Include="md5.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ProgramDirList.json" />

@@ -12,16 +12,23 @@ namespace fs = std::filesystem;
 
 Manager::Manager()
 {
-	PrepareGroupList();
+
 }
 
 Manager::~Manager()
 {
 }
 
+std::string Manager::GetExePath() {
+	wchar_t result[MAX_PATH];
+	GetModuleFileNameW(NULL, result, MAX_PATH);
+	std::wstring::size_type pos = std::wstring(result).find_last_of(L"\\/");
+	return converter.to_bytes(result).substr(0, pos);
+}
+
 void Manager::PrepareGroupList()
 {
-	std::ifstream in("ProgramDirList.json"); // Load json file
+	std::ifstream in(GetExePath() + "\\ProgramDirList.json"); // Load json file
 	json j;
 	in >> j;
 
@@ -129,7 +136,6 @@ std::vector<std::string> Manager::GetWildcardMatchingPaths(std::string path) {
 
 	tempPart = "";
 	int i = 0;
-	//for (const auto & part : parts)
 	while (i < parts.size()) { // Iterate over all path parts
 		if (allPaths.size() == 0) allPaths.push_back(parts[i]);
 
@@ -137,16 +143,15 @@ std::vector<std::string> Manager::GetWildcardMatchingPaths(std::string path) {
 		i++;
 
 		for (const auto& path : allPaths) {
-			//if (std::count(path.begin(), path.end(), delimiter) > 1) tempPath.substr(tempPath.rfind(delimiter)) + delimiter)
 
-			for (const auto& entry : fs::directory_iterator(path.substr(0, path.find_last_of(delimiter) + delimiter.length()))) {
-				if (wildcardMatch(&*entry.path().string().begin(), &*path.begin())) {
-					if (i < parts.size()) tempPaths.push_back(entry.path().string() + parts[i]);
-					else tempPaths.push_back(entry.path().string());
+			std::string pathWithoutWildcard = path.substr(0, path.find_last_of(delimiter) + delimiter.length());
+			if (stat(pathWithoutWildcard.c_str(), &info) == 0) { // If path exists
+				for (const auto& entry : fs::directory_iterator(pathWithoutWildcard)) {
+					if (wildcardMatch(&*entry.path().string().begin(), &*path.begin())) {
+						if (i < parts.size()) tempPaths.push_back(entry.path().string() + parts[i]);
+						else tempPaths.push_back(entry.path().string());
+					}
 				}
-				//auto result = wildcards::match(entry.path().string(), tempPath.substr(tempPath.rfind(delimiter) + delimiter.length())); //{
-
-				//}
 			}
 		}
 		allPaths = tempPaths;

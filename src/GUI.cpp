@@ -83,6 +83,7 @@ GUI::GUI() : wxFrame(nullptr, wxID_ANY, "SEOS Cache Cleaner")
 	m_statusBar->SetStatusText("© 2020 - Berny23", 1);
 
 	about = new DialogAbout(this);
+	manager = new Manager();
 }
 
 GUI::~GUI()
@@ -90,9 +91,8 @@ GUI::~GUI()
 }
 
 void GUI::Init() {
-	manager = new Manager();
-
 	m_statusBar->SetStatusText("Scanning folders, please wait...", 3);
+	manager->PrepareGroupList();
 	UpdateGroupList();
 	m_statusBar->SetStatusText("Ready", 3);
 }

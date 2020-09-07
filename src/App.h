@@ -9,7 +9,6 @@
 
 #include "GUI.h"
 #include "wx/wx.h"
-#include "md5.h"
 
 class App : public wxApp
 {
@@ -22,5 +21,6 @@ private:
 	std::stringstream buffer;
 	std::ifstream fstream;
 
+	Manager* manager;
 	GUI* frame = nullptr;
 };

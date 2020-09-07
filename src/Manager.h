@@ -21,6 +21,7 @@ public:
 	Manager();
 	~Manager();
 
+	std::string GetExePath();
 	void PrepareGroupList();
 	unsigned long long ProcessFilesRecursively(const std::string& folderPath, bool stopAtFirstFile = false, bool deleteFiles = false);
 
@@ -49,10 +50,10 @@ public:
 	};
 
 	std::vector<GROUP> groupList;
+	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 
 private:
 	struct stat info;
-	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 
 	std::vector<std::string> GetWildcardMatchingPaths(std::string fullPath);
 	bool wildcardMatch(char str[], const char pattern[]);
