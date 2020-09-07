@@ -13,9 +13,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       
-    - name: Setup MSBuild.exe
-      uses: warrenbuckley/Setup-MSBuild@v1
+    - name: setup-msbuild
+      uses: microsoft/setup-msbuild@v1.0.1
       
     - name: MSBuild
-      working-directory: src
-      run: msbuild SEOS-CacheCleaner.vcxproj
+      run: msbuild src/SEOS-CacheCleaner.vcxproj
