@@ -12,9 +12,8 @@
 #include <vector>
 #include <json.hpp>
 #include <windows.h>
-#include <processenv.h>
-#include <algorithm>
 #include <string>
+#include <codecvt>
 
 class Manager
 {
@@ -22,9 +21,9 @@ public:
 	Manager();
 	~Manager();
 
-	void PrepareProgramList();
-	unsigned long long GetFolderSize(std::string path);
-	
+	void PrepareGroupList();
+	unsigned long long ProcessFilesRecursively(const std::string& folderPath, bool stopAtFirstFile = false, bool deleteFiles = false);
+
 	struct DIRECTORY {
 		DIRECTORY(unsigned int id, bool isSafe, std::string path) {
 			this->id = id;
@@ -37,8 +36,8 @@ public:
 		std::string path;
 	};
 
-	struct PROGRAM {
-		PROGRAM(unsigned int id, std::string name, std::vector<DIRECTORY> directories) {
+	struct GROUP {
+		GROUP(unsigned int id, std::string name, std::vector<DIRECTORY> directories) {
 			this->id = id;
 			this->name = name;
 			this->directories = directories;
@@ -49,10 +48,12 @@ public:
 		std::vector<DIRECTORY> directories;
 	};
 
-	std::vector<PROGRAM> programList;
+	std::vector<GROUP> groupList;
 
 private:
 	struct stat info;
+	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 
-	std::string ReplaceAll(std::string str, const std::string& from, const std::string& to);
+	std::vector<std::string> GetWildcardMatchingPaths(std::string fullPath);
+	bool wildcardMatch(char str[], const char pattern[]);
 };

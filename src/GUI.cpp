@@ -25,7 +25,7 @@ GUI::GUI() : wxFrame(nullptr, wxID_ANY, "SEOS Cache Cleaner")
 	m_menubar = new wxMenuBar(0);
 	m_menu1 = new wxMenu();
 	wxMenuItem* m_menuItem1;
-	m_menuItem1 = new wxMenuItem(m_menu1, 10003, wxString(wxT("Refresh program list")) + wxT('\t') + wxT("CTRL+R"), wxEmptyString, wxITEM_NORMAL);
+	m_menuItem1 = new wxMenuItem(m_menu1, 10003, wxString(wxT("Refresh list")) + wxT('\t') + wxT("CTRL+R"), wxEmptyString, wxITEM_NORMAL);
 	m_menu1->Append(m_menuItem1);
 
 	wxMenuItem* m_menuItem2;
@@ -47,7 +47,7 @@ GUI::GUI() : wxFrame(nullptr, wxID_ANY, "SEOS Cache Cleaner")
 	bSizer1 = new wxBoxSizer(wxVERTICAL);
 
 	m_treeListCtrl = new wxTreeListCtrl(this, 10002, wxDefaultPosition, wxDefaultSize, wxTL_3STATE | wxTL_CHECKBOX | wxTL_DEFAULT_STYLE | wxTL_MULTIPLE);
-	m_treeListCtrl->AppendColumn(wxT("Installed Programs"), wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT, wxCOL_SORTABLE);
+	m_treeListCtrl->AppendColumn(wxT("Name"), wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT, wxCOL_SORTABLE);
 	m_treeListCtrl->AppendColumn(wxT("ID"), wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT, wxCOL_HIDDEN);
 	m_treeListCtrl->AppendColumn(wxT("Size"), wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT, 0);
 
@@ -76,20 +76,28 @@ GUI::GUI() : wxFrame(nullptr, wxID_ANY, "SEOS Cache Cleaner")
 
 	// Generated - End
 
+	m_treeListCtrl->SetSortColumn(0);
+
 	int widths[] = { 0, 100, -1, 200, -1, 100 };
 	m_statusBar->SetStatusWidths(6, widths);
 	m_statusBar->SetStatusText("© 2020 - Berny23", 1);
 
 	about = new DialogAbout(this);
-	manager = new Manager();
-	UpdateProgramList();
 }
 
 GUI::~GUI()
 {
 }
 
-void GUI::UpdateProgramList()
+void GUI::Init() {
+	manager = new Manager();
+
+	m_statusBar->SetStatusText("Scanning folders, please wait...", 3);
+	UpdateGroupList();
+	m_statusBar->SetStatusText("Ready", 3);
+}
+
+void GUI::UpdateGroupList()
 {
 	m_treeListCtrl->DeleteAllItems();
 	displaySize = 0;
@@ -97,7 +105,7 @@ void GUI::UpdateProgramList()
 	wxTreeListItem tempItem, tempChildItem;
 	unsigned long long progSize, folderSize;
 
-	for (auto& prog : manager->programList) {
+	for (auto& prog : manager->groupList) {
 		tempItem = m_treeListCtrl->AppendItem(m_treeListCtrl->GetRootItem(), prog.name);
 		m_treeListCtrl->SetItemText(tempItem, 1, std::to_string(prog.id));
 
@@ -106,7 +114,7 @@ void GUI::UpdateProgramList()
 		for (auto& dir : prog.directories) {
 			tempChildItem = m_treeListCtrl->AppendItem(tempItem, dir.path);
 			m_treeListCtrl->SetItemText(tempChildItem, 1, std::to_string(dir.id));
-			folderSize = manager->GetFolderSize(dir.path);
+			folderSize = manager->ProcessFilesRecursively(dir.path);
 			progSize += folderSize;
 			m_treeListCtrl->SetItemText(tempChildItem, 2, GetStyledSize(folderSize));
 
@@ -124,8 +132,8 @@ void GUI::UpdateProgramList()
 
 void GUI::UpdateFolderSize(std::string path, bool add)
 {
-	if (add) displaySize += manager->GetFolderSize(path); // Add size
-	else displaySize -= manager->GetFolderSize(path); // Subtract size
+	if (add) displaySize += manager->ProcessFilesRecursively(path); // Add size
+	else displaySize -= manager->ProcessFilesRecursively(path); // Subtract size
 
 	m_statusBar->SetStatusText(GetStyledSize(), 5);
 }
@@ -146,7 +154,7 @@ std::string GUI::GetStyledSize(unsigned long long size) {
 
 void GUI::TreeListCtrl_OnItemChecked(wxTreeListEvent& event)
 {
-	m_statusBar->SetStatusText("", 3); // Clear status text
+	m_statusBar->SetStatusText("Ready", 3); // Clear status text
 
 	m_treeListCtrl->UpdateItemParentStateRecursively(event.GetItem());
 	wxTreeListItem tempItem;
@@ -215,7 +223,6 @@ void GUI::ButtonOk_OnPressed(wxCommandEvent& event)
 			m_statusBar->SetStatusText("Removing selected files...", 3);
 
 			displaySize = 0;
-			std::string path;
 			int counter = 1;
 			m_gauge->SetRange(items.size());
 
@@ -223,45 +230,36 @@ void GUI::ButtonOk_OnPressed(wxCommandEvent& event)
 				m_gauge->SetValue(counter);
 				counter++;
 
-				path = m_treeListCtrl->GetItemText(item).ToStdString();
-				displaySize += manager->GetFolderSize(path); // Needed to display total filesize later
-
-				for (auto& p : std::filesystem::recursive_directory_iterator(path)) { // Iterate over all files and folders
-					try {
-						std::filesystem::remove(p); // Delete file
-					}
-					catch (std::filesystem::filesystem_error& e) {
-						std::cout << e.what() << std::endl; // Simple log
-					}
-				}
-
-				try {
-					std::filesystem::remove(path); // Delete folder if possible
-				}
-				catch (std::filesystem::filesystem_error& e) {
-					std::cout << e.what() << std::endl; // Simple log
-				}
+				displaySize += manager->ProcessFilesRecursively(m_treeListCtrl->GetItemText(item).ToStdString(), false, true);
 			}
 
-			m_statusBar->SetStatusText("Cleaned " + GetStyledSize() + " in total!", 3);
+			m_statusBar->SetStatusText("Cleaning ended (" + GetStyledSize() + ").", 3);
 			m_gauge->Disable();
 			m_treeListCtrl->Enable();
 			m_buttonOk->Enable();
 
 			displaySize = 0;
-			manager->PrepareProgramList();
-			UpdateProgramList();
+			manager->PrepareGroupList();
+			UpdateGroupList();
+
+
 		}
 	}
 }
 
 void GUI::MenuItem1_OnPressed(wxCommandEvent& event)
 {
-	manager->PrepareProgramList();
-	UpdateProgramList();
-
+	m_buttonOk->Disable();
+	m_treeListCtrl->Disable();
 	m_gauge->SetValue(0);
-	m_statusBar->SetStatusText("Successfully refreshed list.", 3);
+	m_statusBar->SetStatusText("Scanning folders, please wait...", 3);
+
+	manager->PrepareGroupList();
+	UpdateGroupList();
+
+	m_statusBar->SetStatusText("Ready", 3);
+	m_buttonOk->Enable();
+	m_treeListCtrl->Enable();
 }
 
 void GUI::MenuItem2_OnPressed(wxCommandEvent& event)

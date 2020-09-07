@@ -7,8 +7,9 @@
 
 #pragma once
 
-#include "wx/wx.h"
 #include "GUI.h"
+#include "wx/wx.h"
+#include "md5.h"
 
 class App : public wxApp
 {
@@ -18,5 +19,8 @@ public:
 	virtual bool OnInit();
 
 private:
+	std::stringstream buffer;
+	std::ifstream fstream;
+
 	GUI* frame = nullptr;
 };

@@ -19,6 +19,8 @@ public:
 	GUI();
 	~GUI();
 
+	void Init();
+
 private:
 
 	// Generated - Start
@@ -39,7 +41,7 @@ private:
 	std::stringstream displaySizeStream;
 	unsigned long long displaySize;
 
-	void UpdateProgramList();
+	void UpdateGroupList();
 	void UpdateFolderSize(std::string path, bool add);
 	std::string GetStyledSize(unsigned long long size = NULL);
 	void TreeListCtrl_OnItemChecked(wxTreeListEvent& event);

@@ -1,20 +1,349 @@
 {
-  "programs": [
+  "groups": [
     {
-      "name": "My Program 1",
+      "name": "Adobe Common",
       "directories": [
         {
           "isSafe": true,
-          "path": "%USERPROFILE%/Test Folder"
+          "path": "%APPDATA%\\Adobe\\Common\\Media Cache Files"
         },
         {
-          "isSafe": false,
-          "path": "C:/NOTEXISTING"
+          "isSafe": true,
+          "path": "%APPDATA%\\Adobe\\Common\\Media Cache"
+        },
+        {
+          "isSafe": true,
+          "path": "%APPDATA%\\Adobe\\Common\\Team Projects Cache"
         }
       ]
     },
     {
-      "name": "My Program 2"
+      "name": "Minecraft",
+      "directories": [
+        {
+          "isSafe": true,
+          "path": "%APPDATA%\\.minecraft\\webcache"
+        },
+        {
+          "isSafe": false,
+          "path": "%APPDATA%\\.minecraft\\logs"
+        }
+      ]
+    },
+    {
+      "name": "Blender",
+      "directories": [
+        {
+          "isSafe": true,
+          "path": "%APPDATA%\\Blender Foundation\\Blender\\2.80\\cache"
+        }
+      ]
+    },
+    {
+      "name": "Mozilla",
+      "directories": [
+        {
+          "isSafe": false,
+          "path": "%APPDATA%\\Mozilla\\Firefox\\Crash Reports"
+        }
+      ]
+    },
+    {
+      "name": "Vortex",
+      "directories": [
+        {
+          "isSafe": true,
+          "path": "%APPDATA%\\Vortex\\Cache"
+        },
+        {
+          "isSafe": true,
+          "path": "%APPDATA%\\Vortex\\GPUCache"
+        },
+        {
+          "isSafe": true,
+          "path": "%APPDATA%\\Vortex\\temp"
+        },
+        {
+          "isSafe": true,
+          "path": "%APPDATA%\\Vortex\\Code Cache"
+        },
+        {
+          "isSafe": false,
+          "path": "%APPDATA%\\Vortex\\logs"
+        }
+      ]
+    },
+    {
+      "name": "Discord",
+      "directories": [
+        {
+          "isSafe": true,
+          "path": "%APPDATA%\\discord\\Code Cache"
+        },
+        {
+          "isSafe": true,
+          "path": "%APPDATA%\\discord\\GPUCache"
+        },
+        {
+          "isSafe": false,
+          "path": "%APPDATA%\\discord\\logs"
+        }
+      ]
+    },
+    {
+      "name": "Parsec",
+      "directories": [
+        {
+          "isSafe": true,
+          "path": "%APPDATA%\\Parsec\\Cache"
+        },
+        {
+          "isSafe": true,
+          "path": "%APPDATA%\\Parsec\\GPUCache"
+        }
+      ]
+    },
+    {
+      "name": "SimSync",
+      "directories": [
+        {
+          "isSafe": true,
+          "path": "%APPDATA%\\simsync\\Cache"
+        },
+        {
+          "isSafe": true,
+          "path": "%APPDATA%\\simsync\\GPUCache"
+        }
+      ]
+    },
+    {
+      "name": "npm",
+      "directories": [
+        {
+          "isSafe": true,
+          "path": "%APPDATA%\\npm-cache"
+        }
+      ]
+    },
+    {
+      "name": "Microsoft Windows",
+      "directories": [
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\Temp"
+        },
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\Microsoft\\Windows\\WebCache"
+        },
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\Microsoft\\FontCache"
+        },
+        {
+          "isSafe": false,
+          "path": "%LOCALAPPDATA%\\CrashDumps"
+        }
+      ]
+    },
+    {
+      "name": "NVIDIA",
+      "directories": [
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\NVIDIA Corporation\\GeForceNOW\\CefCache"
+        },
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\NVIDIA Corporation\\GeForceNOW\\IconCache"
+        },
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\NVIDIA Corporation\\GeForceNOWStreamer\\CefCache"
+        }
+      ]
+    },
+    {
+      "name": "Google",
+      "directories": [
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\Google\\Chrome\\User Data\\ShaderCache"
+        },
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\Google\\Chrome\\User Data\\GrShaderCache"
+        },
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\Google\\DriveFS\\cef_cache"
+        },
+        {
+          "isSafe": false,
+          "path": "%LOCALAPPDATA%\\Google\\CrashReports"
+        }
+      ]
+    },
+    {
+      "name": "Vivaldi",
+      "directories": [
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\Vivaldi\\User Data\\Default\\Cache"
+        },
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\Vivaldi\\User Data\\ShaderCache"
+        }
+      ]
+    },
+    {
+      "name": "Steam",
+      "directories": [
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\Steam\\htmlcache"
+        }
+      ]
+    },
+    {
+      "name": "Origin",
+      "directories": [
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\Origin\\Origin\\cache"
+        },
+        {
+          "isSafe": false,
+          "path": "%LOCALAPPDATA%\\Origin\\Logs"
+        },
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\Origin\\Web Cache"
+        },
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\Origin\\AvatarsCache"
+        }
+      ]
+    },
+    {
+      "name": "AMD",
+      "directories": [
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\AMD\\DxCache"
+        },
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\AMD\\GLCache"
+        },
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\AMD\\VkCache"
+        },
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\AMD\\Radeonsoftware\\cache"
+        }
+      ]
+    },
+    {
+      "name": "Battle.net",
+      "directories": [
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\Battle.net\\BrowserCache"
+        },
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\Battle.net\\Cache"
+        },
+        {
+          "isSafe": false,
+          "path": "%LOCALAPPDATA%\\Battle.net\\Logs"
+        }
+      ]
+    },
+    {
+      "name": "Unity",
+      "directories": [
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\Unity\\cache"
+        }
+      ]
+    },
+    {
+      "name": "Bethesda",
+      "directories": [
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\Bethesda.net Launcher\\cache"
+        }
+      ]
+    },
+    {
+      "name": "Spotify",
+      "directories": [
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\Spotify\\Browser\\Cache"
+        },
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\Spotify\\Browser\\GPUCache"
+        }
+      ]
+    },
+    {
+      "name": "Electron",
+      "directories": [
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\electron\\Cache"
+        }
+      ]
+    },
+    {
+      "name": "MusicBee",
+      "directories": [
+        {
+          "isSafe": false,
+          "path": "%LOCALAPPDATA%\\MusicBee\\InternalCache"
+        }
+      ]
+    },
+    {
+      "name": "pip",
+      "directories": [
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\pip\\cache"
+        }
+      ]
+    },
+    {
+      "name": "Feed The Beast",
+      "directories": [
+        {
+          "isSafe": true,
+          "path": "%USERPROFILE%\\.ftba\\instances\\.localCache"
+        }
+      ]
+    },
+    {
+      "name": "Android Studio",
+      "directories": [
+        {
+          "isSafe": true,
+          "path": "%USERPROFILE%\\.AndroidStudio4.0\\system\\caches"
+        },
+        {
+          "isSafe": false,
+          "path": "%USERPROFILE%\\.AndroidStudio4.0\\system\\logs"
+        }
+      ]
     }
   ]
 }
