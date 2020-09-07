@@ -13,10 +13,21 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        submodules: true
+        submodules: recursive
       
     - name: setup-msbuild
       uses: microsoft/setup-msbuild@v1.0.1
+      with:
+        vs-version: '[16,17)'
       
-    - name: MSBuild
-      run: msbuild SEOS-CacheCleaner.sln
+    - name: MSBuild wxWidgets (x64 Release)
+      run: msbuild libs/wxWidgets/wxWidgets/build/msw/wx_vc16.sln /property:Configuration=Release /property:Platform=x64
+      
+    - name: MSBuild wxWidgets (Win32 Release)
+      run: msbuild libs/wxWidgets/wxWidgets/build/msw/wx_vc16.sln /property:Configuration=Release /property:Platform=Win32
+      
+    - name: MSBuild (x64 Release)
+      run: msbuild SEOS-CacheCleaner.sln /property:Configuration=Release /property:Platform=x64
+      
+    - name: MSBuild (x86 Release)
+      run: msbuild SEOS-CacheCleaner.sln /property:Configuration=Release /property:Platform=x86
