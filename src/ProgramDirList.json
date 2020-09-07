@@ -35,7 +35,7 @@
       "directories": [
         {
           "isSafe": true,
-          "path": "%APPDATA%\\Blender Foundation\\Blender\\2.80\\cache"
+          "path": "%APPDATA%\\Blender Foundation\\Blender\\*\\cache"
         }
       ]
     },
@@ -337,11 +337,11 @@
       "directories": [
         {
           "isSafe": true,
-          "path": "%USERPROFILE%\\.AndroidStudio4.0\\system\\caches"
+          "path": "%USERPROFILE%\\.AndroidStudio*\\system\\caches"
         },
         {
           "isSafe": false,
-          "path": "%USERPROFILE%\\.AndroidStudio4.0\\system\\logs"
+          "path": "%USERPROFILE%\\.AndroidStudio*\\system\\logs"
         }
       ]
     }

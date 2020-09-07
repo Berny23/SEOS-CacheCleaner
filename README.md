@@ -17,7 +17,7 @@ Allows you to clean temporary or cached files from selected Windows programs.
 
 1. You may have to installed the [Visual C++ 2019 redistributable (x64)](https://aka.ms/vs/16/release/vc_redist.x64.exe) or [Visual C++ 2019 redistributable (x86)](https://aka.ms/vs/16/release/vc_redist.x86.exe).
 
-2. Download the latest release of "SEOS Cache Cleaner" from [here](https://github.com/Berny23/transparent-overlays/releases/latest/download/Transparent_Overlays.exe) and run it.
+2. Download the latest release of "SEOS Cache Cleaner" from [here](https://github.com/Berny23/SEOS-CacheCleaner/releases/latest) and run it.
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
