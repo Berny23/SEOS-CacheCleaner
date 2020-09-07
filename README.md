@@ -1,4 +1,5 @@
 # SEOS Cache Cleaner
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Berny23/SEOS-CacheCleaner/build-release)
 
 Allows you to clean temporary or cached files from selected Windows programs.
 
