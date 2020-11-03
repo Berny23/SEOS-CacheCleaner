@@ -45,6 +45,26 @@
         {
           "isSafe": false,
           "path": "%APPDATA%\\Mozilla\\Firefox\\Crash Reports"
+        },
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\Mozilla\\Firefox\\Profiles\\*\\cache2"
+        },
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\Mozilla\\Firefox\\Profiles\\*\\OfflineCache"
+        },
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\Mozilla\\Firefox\\Profiles\\*\\startupCache"
+        },
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\Thunderbird\\Profiles\\*\\cache2"
+        },
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\Thunderbird\\Profiles\\*\\startupCache"
         }
       ]
     },
@@ -87,6 +107,10 @@
         {
           "isSafe": false,
           "path": "%APPDATA%\\discord\\logs"
+        },
+        {
+          "isSafe": true,
+          "path": "%APPDATA%\\discord\\Cache"
         }
       ]
     },
@@ -147,6 +171,31 @@
       ]
     },
     {
+      "name": "Microsoft Teams",
+      "directories": [
+        {
+          "isSafe": true,
+          "path": "%APPDATA%\\Microsoft\\Teams\\Service Worker\\CacheStorage"
+        },
+        {
+          "isSafe": true,
+          "path": "%APPDATA%\\Microsoft\\Teams\\Service Worker\\ScriptCache"
+        },
+        {
+          "isSafe": true,
+          "path": "%APPDATA%\\Microsoft\\Teams\\tmp"
+        },
+        {
+          "isSafe": true,
+          "path": "%APPDATA%\\Microsoft\\Teams\\Cache"
+        },
+        {
+          "isSafe": true,
+          "path": "%APPDATA%\\Microsoft\\Teams\\GPUCache"
+        }
+      ]
+    },
+    {
       "name": "NVIDIA",
       "directories": [
         {
@@ -181,6 +230,18 @@
         {
           "isSafe": false,
           "path": "%LOCALAPPDATA%\\Google\\CrashReports"
+        },
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\Google\\Chrome\\User Data\\Default\\Cache"
+        },
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\Google\\Chrome\\User Data\\Default\\Code Cache"
+        },
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\Google\\Chrome\\User Data\\Default\\GPUCache"
         }
       ]
     },
@@ -245,6 +306,10 @@
         {
           "isSafe": true,
           "path": "%LOCALAPPDATA%\\AMD\\Radeonsoftware\\cache"
+        },
+        {
+          "isSafe": true,
+          "path": "%SYSTEMDRIVE%\\AMD"
         }
       ]
     },
@@ -342,6 +407,53 @@
         {
           "isSafe": false,
           "path": "%USERPROFILE%\\.AndroidStudio*\\system\\logs"
+        },
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\Google\\AndroidStudio*\\caches"
+        },
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\Google\\AndroidStudio*\\tmp"
+        },
+        {
+          "isSafe": false,
+          "path": "%LOCALAPPDATA%\\Google\\AndroidStudio*\\log"
+        },
+        {
+          "isSafe": true,
+          "path": "%USERPROFILE%\\.gradle\\caches"
+        }
+      ]
+    },
+    {
+      "name": "NuGet",
+      "directories": [
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\NuGet\\Cache"
+        }
+      ]
+    },
+    {
+      "name": "Epic Games Launcher",
+      "directories": [
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\EpicGamesLauncher\\Saved\\webcache"
+        },
+        {
+          "isSafe": false,
+          "path": "%LOCALAPPDATA%\\EpicGamesLauncher\\Saved\\Logs"
+        }
+      ]
+    },
+    {
+      "name": "Mirillis",
+      "directories": [
+        {
+          "isSafe": true,
+          "path": "%LOCALAPPDATA%\\Mirillis\\updates"
         }
       ]
     }
