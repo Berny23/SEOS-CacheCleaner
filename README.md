@@ -1,5 +1,8 @@
 # SEOS Cache Cleaner
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Berny23/SEOS-CacheCleaner/build-release)
+<span class="badge-buymeacoffee">
+<a href="https://www.buymeacoffee.com/Berny23" title="Donate to this project using Buy Me A Coffee"><img src="https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg" alt="Buy Me A Coffee donate button" /></a>
+</span>
 
 Allows you to clean temporary or cached files from selected Windows programs.
 
